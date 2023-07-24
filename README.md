@@ -107,22 +107,3 @@ background color. However it's easy to do manually via editing the
     doc.X().Background = wordprocessingml.NewCT_Background()
 	doc.X().Background.ColorAttr = &wordprocessingml.ST_HexColor{}
 	doc.X().Background.ColorAttr.ST_HexColorRGB = color.RGB(50, 50, 50).AsRGBString()
-
-### Contribution guidelines ###
-
-[![CLA assistant](https://cla-assistant.io/readme/badge/unidoc/office)](https://cla-assistant.io/unidoc/office)
-
-All contributors are must sign a contributor license agreement before their code
-will be reviewed and merged.
-
-
-### Licensing ###
-
-This library is offered under a dual license. It is freely available for use
-under the terms of AGPLv3. If you would like to use this library for a closed
-source project, please contact sales@unidoc.io.
-
-There are no differences in functionality between the open source and commercial 
-versions. You are encouraged to use the open source version to evaluate the library
-before purchasing a commercial license.
-
