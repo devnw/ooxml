@@ -1,0 +1,72 @@
+package math
+
+import (
+	"encoding/xml"
+
+	"go.devnw.com/ooxml"
+)
+
+type CT_OMathArgPr struct {
+	ArgSz *CT_Integer2
+}
+
+func NewCT_OMathArgPr() *CT_OMathArgPr {
+	ret := &CT_OMathArgPr{}
+	return ret
+}
+
+func (m *CT_OMathArgPr) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	e.EncodeToken(start)
+	if m.ArgSz != nil {
+		seargSz := xml.StartElement{Name: xml.Name{Local: "m:argSz"}}
+		e.EncodeElement(m.ArgSz, seargSz)
+	}
+	e.EncodeToken(xml.EndElement{Name: start.Name})
+	return nil
+}
+
+func (m *CT_OMathArgPr) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	// initialize to default
+lCT_OMathArgPr:
+	for {
+		tok, err := d.Token()
+		if err != nil {
+			return err
+		}
+		switch el := tok.(type) {
+		case xml.StartElement:
+			switch el.Name {
+			case xml.Name{Space: "http://schemas.openxmlformats.org/officeDocument/2006/math", Local: "argSz"},
+				xml.Name{Space: "http://purl.oclc.org/ooxml/officeDocument/math", Local: "argSz"}:
+				m.ArgSz = NewCT_Integer2()
+				if err := d.DecodeElement(m.ArgSz, &el); err != nil {
+					return err
+				}
+			default:
+				office.Log("skipping unsupported element on CT_OMathArgPr %v", el.Name)
+				if err := d.Skip(); err != nil {
+					return err
+				}
+			}
+		case xml.EndElement:
+			break lCT_OMathArgPr
+		case xml.CharData:
+		}
+	}
+	return nil
+}
+
+// Validate validates the CT_OMathArgPr and its children
+func (m *CT_OMathArgPr) Validate() error {
+	return m.ValidateWithPath("CT_OMathArgPr")
+}
+
+// ValidateWithPath validates the CT_OMathArgPr and its children, prefixing error messages with path
+func (m *CT_OMathArgPr) ValidateWithPath(path string) error {
+	if m.ArgSz != nil {
+		if err := m.ArgSz.ValidateWithPath(path + "/ArgSz"); err != nil {
+			return err
+		}
+	}
+	return nil
+}

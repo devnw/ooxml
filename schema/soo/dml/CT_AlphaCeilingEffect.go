@@ -1,0 +1,45 @@
+package dml
+
+import (
+	"encoding/xml"
+	"fmt"
+)
+
+type CT_AlphaCeilingEffect struct {
+}
+
+func NewCT_AlphaCeilingEffect() *CT_AlphaCeilingEffect {
+	ret := &CT_AlphaCeilingEffect{}
+	return ret
+}
+
+func (m *CT_AlphaCeilingEffect) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	e.EncodeToken(start)
+	e.EncodeToken(xml.EndElement{Name: start.Name})
+	return nil
+}
+
+func (m *CT_AlphaCeilingEffect) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	// initialize to default
+	// skip any extensions we may find, but don't support
+	for {
+		tok, err := d.Token()
+		if err != nil {
+			return fmt.Errorf("parsing CT_AlphaCeilingEffect: %s", err)
+		}
+		if el, ok := tok.(xml.EndElement); ok && el.Name == start.Name {
+			break
+		}
+	}
+	return nil
+}
+
+// Validate validates the CT_AlphaCeilingEffect and its children
+func (m *CT_AlphaCeilingEffect) Validate() error {
+	return m.ValidateWithPath("CT_AlphaCeilingEffect")
+}
+
+// ValidateWithPath validates the CT_AlphaCeilingEffect and its children, prefixing error messages with path
+func (m *CT_AlphaCeilingEffect) ValidateWithPath(path string) error {
+	return nil
+}

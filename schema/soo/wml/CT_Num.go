@@ -1,0 +1,106 @@
+package wml
+
+import (
+	"encoding/xml"
+	"fmt"
+	"strconv"
+
+	"go.devnw.com/ooxml"
+)
+
+type CT_Num struct {
+	// Numbering Definition Instance ID
+	NumIdAttr int64
+	// Abstract Numbering Definition Reference
+	AbstractNumId *CT_DecimalNumber
+	// Numbering Level Definition Override
+	LvlOverride []*CT_NumLvl
+}
+
+func NewCT_Num() *CT_Num {
+	ret := &CT_Num{}
+	ret.AbstractNumId = NewCT_DecimalNumber()
+	return ret
+}
+
+func (m *CT_Num) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	start.Attr = append(start.Attr, xml.Attr{Name: xml.Name{Local: "w:numId"},
+		Value: fmt.Sprintf("%v", m.NumIdAttr)})
+	e.EncodeToken(start)
+	seabstractNumId := xml.StartElement{Name: xml.Name{Local: "w:abstractNumId"}}
+	e.EncodeElement(m.AbstractNumId, seabstractNumId)
+	if m.LvlOverride != nil {
+		selvlOverride := xml.StartElement{Name: xml.Name{Local: "w:lvlOverride"}}
+		for _, c := range m.LvlOverride {
+			e.EncodeElement(c, selvlOverride)
+		}
+	}
+	e.EncodeToken(xml.EndElement{Name: start.Name})
+	return nil
+}
+
+func (m *CT_Num) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	// initialize to default
+	m.AbstractNumId = NewCT_DecimalNumber()
+	for _, attr := range start.Attr {
+		if attr.Name.Local == "numId" {
+			parsed, err := strconv.ParseInt(attr.Value, 10, 64)
+			if err != nil {
+				return err
+			}
+			m.NumIdAttr = parsed
+			continue
+		}
+	}
+lCT_Num:
+	for {
+		tok, err := d.Token()
+		if err != nil {
+			return err
+		}
+		switch el := tok.(type) {
+		case xml.StartElement:
+			switch el.Name {
+			case xml.Name{Space: "http://schemas.openxmlformats.org/wordprocessingml/2006/main", Local: "abstractNumId"},
+				xml.Name{Space: "http://purl.oclc.org/ooxml/wordprocessingml/main", Local: "abstractNumId"}:
+				if err := d.DecodeElement(m.AbstractNumId, &el); err != nil {
+					return err
+				}
+			case xml.Name{Space: "http://schemas.openxmlformats.org/wordprocessingml/2006/main", Local: "lvlOverride"},
+				xml.Name{Space: "http://purl.oclc.org/ooxml/wordprocessingml/main", Local: "lvlOverride"}:
+				tmp := NewCT_NumLvl()
+				if err := d.DecodeElement(tmp, &el); err != nil {
+					return err
+				}
+				m.LvlOverride = append(m.LvlOverride, tmp)
+			default:
+				office.Log("skipping unsupported element on CT_Num %v", el.Name)
+				if err := d.Skip(); err != nil {
+					return err
+				}
+			}
+		case xml.EndElement:
+			break lCT_Num
+		case xml.CharData:
+		}
+	}
+	return nil
+}
+
+// Validate validates the CT_Num and its children
+func (m *CT_Num) Validate() error {
+	return m.ValidateWithPath("CT_Num")
+}
+
+// ValidateWithPath validates the CT_Num and its children, prefixing error messages with path
+func (m *CT_Num) ValidateWithPath(path string) error {
+	if err := m.AbstractNumId.ValidateWithPath(path + "/AbstractNumId"); err != nil {
+		return err
+	}
+	for i, v := range m.LvlOverride {
+		if err := v.ValidateWithPath(fmt.Sprintf("%s/LvlOverride[%d]", path, i)); err != nil {
+			return err
+		}
+	}
+	return nil
+}

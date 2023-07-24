@@ -1,0 +1,124 @@
+package wml
+
+import (
+	"encoding/xml"
+
+	"go.devnw.com/ooxml"
+)
+
+type CT_FFTextInput struct {
+	// Text Box Form Field Type
+	Type *CT_FFTextType
+	// Default Text Box Form Field String
+	Default *CT_String
+	// Text Box Form Field Maximum Length
+	MaxLength *CT_DecimalNumber
+	// Text Box Form Field Formatting
+	Format *CT_String
+}
+
+func NewCT_FFTextInput() *CT_FFTextInput {
+	ret := &CT_FFTextInput{}
+	return ret
+}
+
+func (m *CT_FFTextInput) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	e.EncodeToken(start)
+	if m.Type != nil {
+		setype := xml.StartElement{Name: xml.Name{Local: "w:type"}}
+		e.EncodeElement(m.Type, setype)
+	}
+	if m.Default != nil {
+		sedefault := xml.StartElement{Name: xml.Name{Local: "w:default"}}
+		e.EncodeElement(m.Default, sedefault)
+	}
+	if m.MaxLength != nil {
+		semaxLength := xml.StartElement{Name: xml.Name{Local: "w:maxLength"}}
+		e.EncodeElement(m.MaxLength, semaxLength)
+	}
+	if m.Format != nil {
+		seformat := xml.StartElement{Name: xml.Name{Local: "w:format"}}
+		e.EncodeElement(m.Format, seformat)
+	}
+	e.EncodeToken(xml.EndElement{Name: start.Name})
+	return nil
+}
+
+func (m *CT_FFTextInput) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	// initialize to default
+lCT_FFTextInput:
+	for {
+		tok, err := d.Token()
+		if err != nil {
+			return err
+		}
+		switch el := tok.(type) {
+		case xml.StartElement:
+			switch el.Name {
+			case xml.Name{Space: "http://schemas.openxmlformats.org/wordprocessingml/2006/main", Local: "type"},
+				xml.Name{Space: "http://purl.oclc.org/ooxml/wordprocessingml/main", Local: "type"}:
+				m.Type = NewCT_FFTextType()
+				if err := d.DecodeElement(m.Type, &el); err != nil {
+					return err
+				}
+			case xml.Name{Space: "http://schemas.openxmlformats.org/wordprocessingml/2006/main", Local: "default"},
+				xml.Name{Space: "http://purl.oclc.org/ooxml/wordprocessingml/main", Local: "default"}:
+				m.Default = NewCT_String()
+				if err := d.DecodeElement(m.Default, &el); err != nil {
+					return err
+				}
+			case xml.Name{Space: "http://schemas.openxmlformats.org/wordprocessingml/2006/main", Local: "maxLength"},
+				xml.Name{Space: "http://purl.oclc.org/ooxml/wordprocessingml/main", Local: "maxLength"}:
+				m.MaxLength = NewCT_DecimalNumber()
+				if err := d.DecodeElement(m.MaxLength, &el); err != nil {
+					return err
+				}
+			case xml.Name{Space: "http://schemas.openxmlformats.org/wordprocessingml/2006/main", Local: "format"},
+				xml.Name{Space: "http://purl.oclc.org/ooxml/wordprocessingml/main", Local: "format"}:
+				m.Format = NewCT_String()
+				if err := d.DecodeElement(m.Format, &el); err != nil {
+					return err
+				}
+			default:
+				office.Log("skipping unsupported element on CT_FFTextInput %v", el.Name)
+				if err := d.Skip(); err != nil {
+					return err
+				}
+			}
+		case xml.EndElement:
+			break lCT_FFTextInput
+		case xml.CharData:
+		}
+	}
+	return nil
+}
+
+// Validate validates the CT_FFTextInput and its children
+func (m *CT_FFTextInput) Validate() error {
+	return m.ValidateWithPath("CT_FFTextInput")
+}
+
+// ValidateWithPath validates the CT_FFTextInput and its children, prefixing error messages with path
+func (m *CT_FFTextInput) ValidateWithPath(path string) error {
+	if m.Type != nil {
+		if err := m.Type.ValidateWithPath(path + "/Type"); err != nil {
+			return err
+		}
+	}
+	if m.Default != nil {
+		if err := m.Default.ValidateWithPath(path + "/Default"); err != nil {
+			return err
+		}
+	}
+	if m.MaxLength != nil {
+		if err := m.MaxLength.ValidateWithPath(path + "/MaxLength"); err != nil {
+			return err
+		}
+	}
+	if m.Format != nil {
+		if err := m.Format.ValidateWithPath(path + "/Format"); err != nil {
+			return err
+		}
+	}
+	return nil
+}

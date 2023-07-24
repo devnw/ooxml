@@ -1,0 +1,69 @@
+package pml
+
+import (
+	"encoding/xml"
+
+	"go.devnw.com/ooxml"
+)
+
+type CT_TLBehaviorAttributeNameList struct {
+	// Attribute Name
+	AttrName []string
+}
+
+func NewCT_TLBehaviorAttributeNameList() *CT_TLBehaviorAttributeNameList {
+	ret := &CT_TLBehaviorAttributeNameList{}
+	return ret
+}
+
+func (m *CT_TLBehaviorAttributeNameList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	e.EncodeToken(start)
+	seattrName := xml.StartElement{Name: xml.Name{Local: "p:attrName"}}
+	for _, c := range m.AttrName {
+		e.EncodeElement(c, seattrName)
+	}
+	e.EncodeToken(xml.EndElement{Name: start.Name})
+	return nil
+}
+
+func (m *CT_TLBehaviorAttributeNameList) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	// initialize to default
+lCT_TLBehaviorAttributeNameList:
+	for {
+		tok, err := d.Token()
+		if err != nil {
+			return err
+		}
+		switch el := tok.(type) {
+		case xml.StartElement:
+			switch el.Name {
+			case xml.Name{Space: "http://schemas.openxmlformats.org/presentationml/2006/main", Local: "attrName"},
+				xml.Name{Space: "http://purl.oclc.org/ooxml/presentationml/main", Local: "attrName"}:
+				var tmp string
+				if err := d.DecodeElement(&tmp, &el); err != nil {
+					return err
+				}
+				m.AttrName = append(m.AttrName, tmp)
+			default:
+				office.Log("skipping unsupported element on CT_TLBehaviorAttributeNameList %v", el.Name)
+				if err := d.Skip(); err != nil {
+					return err
+				}
+			}
+		case xml.EndElement:
+			break lCT_TLBehaviorAttributeNameList
+		case xml.CharData:
+		}
+	}
+	return nil
+}
+
+// Validate validates the CT_TLBehaviorAttributeNameList and its children
+func (m *CT_TLBehaviorAttributeNameList) Validate() error {
+	return m.ValidateWithPath("CT_TLBehaviorAttributeNameList")
+}
+
+// ValidateWithPath validates the CT_TLBehaviorAttributeNameList and its children, prefixing error messages with path
+func (m *CT_TLBehaviorAttributeNameList) ValidateWithPath(path string) error {
+	return nil
+}
