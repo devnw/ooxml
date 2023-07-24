@@ -1,340 +1,128 @@
-# office
---
-    import "."
-
-
-## Usage
-
-```go
-const (
-	ContentTypesFilename = "[Content_Types].xml"
-	BaseRelsFilename     = "_rels/.rels"
-)
-```
-Common filenames used in zip packages.
-
-```go
-const (
-	// Common strict
-	OfficeDocumentTypeStrict     = "http://purl.oclc.org/ooxml/officeDocument/relationships/officeDocument"
-	StylesTypeStrict             = "http://purl.oclc.org/ooxml/officeDocument/relationships/styles"
-	ThemeTypeStrict              = "http://purl.oclc.org/ooxml/officeDocument/relationships/theme"
-	SettingsTypeStrict           = "http://purl.oclc.org/ooxml/officeDocument/relationships/settings"
-	ImageTypeStrict              = "http://purl.oclc.org/ooxml/officeDocument/relationships/image"
-	CommentsTypeStrict           = "http://purl.oclc.org/ooxml/officeDocument/relationships/comments"
-	ThumbnailTypeStrict          = "http://purl.oclc.org/ooxml/officeDocument/relationships/metadata/thumbnail"
-	DrawingTypeStrict            = "http://purl.oclc.org/ooxml/officeDocument/relationships/drawing"
-	ChartTypeStrict              = "http://purl.oclc.org/ooxml/officeDocument/relationships/chart"
-	ExtendedPropertiesTypeStrict = "http://purl.oclc.org/ooxml/officeDocument/relationships/extendedProperties"
-	CustomXMLTypeStrict          = "http://purl.oclc.org/ooxml/officeDocument/relationships/customXml"
-
-	// SML strict
-	WorksheetTypeStrict     = "http://purl.oclc.org/ooxml/officeDocument/relationships/worksheet"
-	SharedStringsTypeStrict = "http://purl.oclc.org/ooxml/officeDocument/relationships/sharedStrings"
-	// Deprecated: Renamed to SharedStringsTypeStrict, will be removed in next major version.
-	SharedStingsTypeStrict = SharedStringsTypeStrict
-	TableTypeStrict        = "http://purl.oclc.org/ooxml/officeDocument/relationships/table"
-
-	// WML strict
-	HeaderTypeStrict      = "http://purl.oclc.org/ooxml/officeDocument/relationships/header"
-	FooterTypeStrict      = "http://purl.oclc.org/ooxml/officeDocument/relationships/footer"
-	NumberingTypeStrict   = "http://purl.oclc.org/ooxml/officeDocument/relationships/numbering"
-	FontTableTypeStrict   = "http://purl.oclc.org/ooxml/officeDocument/relationships/fontTable"
-	WebSettingsTypeStrict = "http://purl.oclc.org/ooxml/officeDocument/relationships/webSettings"
-	FootNotesTypeStrict   = "http://purl.oclc.org/ooxml/officeDocument/relationships/footnotes"
-	EndNotesTypeStrict    = "http://purl.oclc.org/ooxml/officeDocument/relationships/endnotes"
-
-	// PML strict
-	SlideTypeStrict = "http://purl.oclc.org/ooxml/officeDocument/relationships/slide"
-
-	// VML strict
-	VMLDrawingTypeStrict = "http://purl.oclc.org/ooxml/officeDocument/relationships/vmlDrawing"
-
-	// Common
-	OfficeDocumentType     = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument"
-	StylesType             = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles"
-	ThemeType              = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme"
-	ThemeContentType       = "application/vnd.openxmlformats-officedocument.theme+xml"
-	SettingsType           = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings"
-	ImageType              = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
-	CommentsType           = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments"
-	CommentsContentType    = "application/vnd.openxmlformats-officedocument.spreadsheetml.comments+xml"
-	ThumbnailType          = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail"
-	DrawingType            = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing"
-	DrawingContentType     = "application/vnd.openxmlformats-officedocument.drawing+xml"
-	ChartType              = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart"
-	ChartContentType       = "application/vnd.openxmlformats-officedocument.drawingml.chart+xml"
-	HyperLinkType          = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink"
-	ExtendedPropertiesType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties"
-	CorePropertiesType     = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties"
-	CustomPropertiesType   = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties"
-	CustomXMLType          = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXml"
-	TableStylesType        = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/tableStyles"
-	ViewPropertiesType     = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/viewProps"
-
-	// SML
-	WorksheetType        = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet"
-	WorksheetContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"
-	SharedStringsType    = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings"
-	// Deprecated: Renamed to SharedStringsType, will be removed in next major version.
-	SharedStingsType         = SharedStringsType
-	SharedStringsContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml"
-	SMLStyleSheetContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"
-	TableType                = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/table"
-	TableContentType         = "application/vnd.openxmlformats-officedocument.spreadsheetml.table+xml"
-
-	// WML
-	HeaderType      = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/header"
-	FooterType      = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer"
-	NumberingType   = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering"
-	FontTableType   = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable"
-	WebSettingsType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/webSettings"
-	FootNotesType   = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footnotes"
-	EndNotesType    = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/endnotes"
-
-	// PML
-	SlideType                  = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide"
-	SlideContentType           = "application/vnd.openxmlformats-officedocument.presentationml.slide+xml"
-	SlideMasterType            = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster"
-	SlideMasterContentType     = "application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml"
-	SlideLayoutType            = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout"
-	SlideLayoutContentType     = "application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml"
-	PresentationPropertiesType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/presProps"
-	HandoutMasterType          = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/handoutMaster"
-	NotesMasterType            = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesMaster"
-
-	// VML
-	VMLDrawingType        = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/vmlDrawing"
-	VMLDrawingContentType = "application/vnd.openxmlformats-officedocument.vmlDrawing"
-)
-```
-Consts for content types used throughout the package
-
-```go
-const MinGoVersion = requires_go_18
-```
-MinGoVersion is used to cause a compile time error if office is compiled with an
-older version of go. Specifically it requires a feature in go 1.8 regarding
-collecting all attributes from arbitrary xml used in decode office.XSDAny.
-
-```go
-var Log = log.Printf
-```
-Log is used to log content from within the library. The intent is to use logging
-sparingly, preferring to return an error. At the very least this allows
-redirecting logs to somewhere more appropriate than stdout.
-
-#### func  AbsoluteFilename
-
-```go
-func AbsoluteFilename(dt DocType, typ string, index int) string
-```
-AbsoluteFilename returns the full path to a file from the root of the zip
-container. Index is used in some cases for files which there may be more than
-one of (e.g. worksheets/drawings/charts)
-
-#### func  AbsoluteImageFilename
-
-```go
-func AbsoluteImageFilename(dt DocType, index int, fileExtension string) string
-```
-AbsoluteImageFilename returns the full path to an image from the root of the zip
-container.
-
-#### func  AddPreserveSpaceAttr
-
-```go
-func AddPreserveSpaceAttr(se *xml.StartElement, s string)
-```
-AddPreserveSpaceAttr adds an xml:space="preserve" attribute to a start element
-if it is required for the string s.
-
-#### func  Bool
-
-```go
-func Bool(v bool) *bool
-```
-Bool returns a copy of v as a pointer.
-
-#### func  DisableLogging
-
-```go
-func DisableLogging()
-```
-DisableLogging sets the Log function to a no-op so that any log messages are
-silently discarded.
-
-#### func  Float32
-
-```go
-func Float32(v float32) *float32
-```
-Float32 returns a copy of v as a pointer.
+**ooxml** is a library for creation of Office Open XML documents (.docx, .xlsx
+and .pptx).  It's goal is to be the most compatible and highest performance Go
+library for creation and editing of docx/xlsx/pptx files.
+
+[![Build & Test Action
+Status](https://github.com/devnw/ooxml/actions/workflows/build.yml/badge.svg)](https://github.com/devnw/ooxml/actions)
+[![Go Report
+Card](https://goreportcard.com/badge/go.devnw.com/ooxml)](https://goreportcard.com/report/go.devnw.com/ooxml)
+[![codecov](https://codecov.io/gh/devnw/ooxml/branch/main/graph/badge.svg)](https://codecov.io/gh/devnw/ooxml)
+[![Go
+Reference](https://pkg.go.dev/badge/go.devnw.com/ooxml.svg)](https://pkg.go.dev/go.devnw.com/ooxml)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![PRs
+Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+
+
+## Status ##
+
+- Documents (docx) [Word]
+	- Read/Write/Edit
+	- Formatting
+	- Images
+	- Tables
+- Spreadsheets (xlsx) [Excel]
+ 	- Read/Write/Edit
+ 	- Cell formatting including conditional formatting
+	- Cell validation (drop down combobox, rules, etc.)
+    - Retrieve cell values as formatted by Excel (e.g. retrieve a date or number as displayed in Excel)
+ 	- Formula Evaluation (100+ functions supported currently, more will be added as required)
+ 	- Embedded Images
+ 	- All chart types
+- PowerPoint (pptx) [PowerPoint]
+	- Creation from templates
+	- Textboxes/shapes
+
+
+## Performance ##
+
+There has been a great deal of interest in performance numbers for spreadsheet
+creation/reading lately, so here are office numbers for this
+[benchmark](https://go.devnw.com/ooxml/tree/master/_examples/spreadsheet/lots-of-rows)
+which creates a sheet with 30k rows, each with 100 columns.
+
+    creating 30000 rows * 100 cells took 3.92506863s
+    saving took 89ns
+    reading took 9.522383048s
+
+Creation is fairly fast, saving is very quick due to no reflection usage, and
+reading is a bit slower. The downside is that the binary is large (33MB) as it
+contains generated structs, serialization and deserialization code for all of
+DOCX/XLSX/PPTX.
+
+## Usage ##
+    
+    go get -u go.devnw.com/ooxml
+
+## Document Examples ##
+
+- [Simple Text Formatting](https://go.devnw.com/ooxml/tree/master/_examples/document/simple) Text font colors, sizes, highlighting, etc.
+- [Auto Generated Table of Contents](https://go.devnw.com/ooxml/tree/master/_examples/document/toc) Creating document headings with an auto generated TOC based off of the headingds
+- [Floating Image](https://go.devnw.com/ooxml/tree/master/_examples/document/image) Placing an image somewhere on a page, absolutely positioned with different text wrapping.
+- [Header & Footer](https://go.devnw.com/ooxml/tree/master/_examples/document/header-footer) Creating headers and footers including page numbering.
+- [Multiple Headers & Footers](https://go.devnw.com/ooxml/tree/master/_examples/document/header-footer-multiple) Using different headers and footers depending on document section.
+- [Inline Tables](https://go.devnw.com/ooxml/tree/master/_examples/document/tables) Adding an table with and without borders.
+- [Using Existing Word Document as a Template](https://go.devnw.com/ooxml/tree/master/_examples/document/use-template) Opening a document as a template to re-use the styles created in the document.
+- [Filling out Form Fields](https://go.devnw.com/ooxml/tree/master/_examples/document/fill-out-form) Opening a document with embedded form fields, filling out the fields and saving the result as  a new filled form.
+- [Editing an existing document](https://go.devnw.com/ooxml/tree/master/_examples/document/edit-document) Open an existing document and replace/remove text without modifying formatting.
+
+## Spreadsheet Examples ##
+- [Simple](https://go.devnw.com/ooxml/tree/master/_examples/spreadsheet/simple) A simple sheet with a few cells
+- [Named Cells](https://go.devnw.com/ooxml/tree/master/_examples/spreadsheet/named-cells) Different ways of referencing rows and cells
+- [Cell Number/Date/Time Formats](https://go.devnw.com/ooxml/tree/master/_examples/spreadsheet/number-date-time-formats) Creating cells with various number/date/time formats
+- [Line Chart](https://go.devnw.com/ooxml/tree/master/_examples/spreadsheet/line-chart)/[Line Chart 3D](https://go.devnw.com/ooxml/tree/master/_examples/spreadsheet/line-chart-3d) Line Charts
+- [Bar Chart](https://go.devnw.com/ooxml/tree/master/_examples/spreadsheet/bar-chart) Bar Charts
+- [Mutiple Charts](https://go.devnw.com/ooxml/tree/master/_examples/spreadsheet/multiple-charts) Multiple charts on a single sheet
+- [Named Cell Ranges](https://go.devnw.com/ooxml/tree/master/_examples/spreadsheet/named-ranges) Naming cell ranges
+- [Merged Cells](https://go.devnw.com/ooxml/tree/master/_examples/spreadsheet/merged) Merge and unmerge cells
+- [Conditional Formatting](https://go.devnw.com/ooxml/tree/master/_examples/spreadsheet/conditional-formatting) Conditionally formatting cells, styling, gradients, icons, data bar
+- [Complex](https://go.devnw.com/ooxml/tree/master/_examples/spreadsheet/complex) Multiple charts, auto filtering and conditional formatting
+- [Borders](https://go.devnw.com/ooxml/tree/master/_examples/spreadsheet/borders) Individual cell borders and rectangular borders around a range of cells.
+- [Validation](https://go.devnw.com/ooxml/tree/master/_examples/spreadsheet/validation) Data validation including combo box dropdowns.
+- [Frozen Rows/Cols](https://go.devnw.com/ooxml/tree/master/_examples/spreadsheet/freeze-rows-cols) A sheet with a frozen header column and row
+
+## Presentation Examples ##
+
+- [Simple Text Boxes](https://go.devnw.com/ooxml/tree/master/_examples/presentation/simple) Simple text boxes and shapes
+- [Images](https://go.devnw.com/ooxml/tree/master/_examples/presentation/image) Simple image insertion
+- [Template](https://go.devnw.com/ooxml/tree/master/_examples/presentation/use-template/simple) Creating a presentation from a template
+
+## Raw Types ##
+
+The OOXML specification is large and creating a friendly API to cover the entire
+specification is a very time consuming endeavor.  This library attempts to
+provide an easy to use API for common use cases in creating OOXML documents
+while allowing users to fall back to raw document manipulation should the
+library's API not cover a specific use case.
+
+The raw XML based types reside in the ```schema/``` directory. These types are
+accessible from the wrapper types via a ```X()``` method that returns the raw
+type. 
+
+For example, the library currently doesn't have an API for setting a document
+background color. However it's easy to do manually via editing the
+```CT_Background``` element of the document.
 
-#### func  Float64
-
-```go
-func Float64(v float64) *float64
-```
-Float64 returns a copy of v as a pointer.
+    dox := document.New()
+    doc.X().Background = wordprocessingml.NewCT_Background()
+	doc.X().Background.ColorAttr = &wordprocessingml.ST_HexColor{}
+	doc.X().Background.ColorAttr.ST_HexColorRGB = color.RGB(50, 50, 50).AsRGBString()
 
-#### func  Int32
-
-```go
-func Int32(v int32) *int32
-```
-Int32 returns a copy of v as a pointer.
-
-#### func  Int64
+### Contribution guidelines ###
 
-```go
-func Int64(v int64) *int64
-```
-Int64 returns a copy of v as a pointer.
-
-#### func  Int8
-
-```go
-func Int8(v int8) *int8
-```
-Int8 returns a copy of v as a pointer.
+[![CLA assistant](https://cla-assistant.io/readme/badge/unidoc/office)](https://cla-assistant.io/unidoc/office)
 
-#### func  NeedsSpacePreserve
+All contributors are must sign a contributor license agreement before their code
+will be reviewed and merged.
 
-```go
-func NeedsSpacePreserve(s string) bool
-```
-NeedsSpacePreserve returns true if the string has leading or trailing space.
 
-#### func  RegisterConstructor
-
-```go
-func RegisterConstructor(ns, name string, fn interface{})
-```
-RegisterConstructor registers a constructor function used for unmarshaling
-xsd:any elements.
-
-#### func  RelativeFilename
-
-```go
-func RelativeFilename(dt DocType, relToTyp, typ string, index int) string
-```
-RelativeFilename returns a filename relative to the source file referenced from
-a relationships file. Index is used in some cases for files which there may be
-more than one of (e.g. worksheets/drawings/charts)
-
-#### func  RelativeImageFilename
-
-```go
-func RelativeImageFilename(dt DocType, relToTyp, typ string, index int, fileExtension string) string
-```
-RelativeImageFilename returns an image filename relative to the source file
-referenced from a relationships file. It is identical to RelativeFilename but is
-used particularly for images in order to handle different image formats.
-
-#### func  String
-
-```go
-func String(v string) *string
-```
-String returns a copy of v as a pointer.
-
-#### func  Stringf
-
-```go
-func Stringf(f string, args ...interface{}) *string
-```
-Stringf formats according to a format specifier and returns a pointer to the
-resulting string.
-
-#### func  Uint16
-
-```go
-func Uint16(v uint16) *uint16
-```
-Uint16 returns a copy of v as a pointer.
-
-#### func  Uint32
-
-```go
-func Uint32(v uint32) *uint32
-```
-Uint32 returns a copy of v as a pointer.
-
-#### func  Uint64
-
-```go
-func Uint64(v uint64) *uint64
-```
-Uint64 returns a copy of v as a pointer.
-
-#### func  Uint8
-
-```go
-func Uint8(v uint8) *uint8
-```
-Uint8 returns a copy of v as a pointer.
-
-#### type Any
-
-```go
-type Any interface {
-	MarshalXML(e *xml.Encoder, start xml.StartElement) error
-	UnmarshalXML(d *xml.Decoder, start xml.StartElement) error
-}
-```
-
-Any is the interface used for marshaling/unmarshaling xsd:any
-
-#### func  CreateElement
-
-```go
-func CreateElement(start xml.StartElement) (Any, error)
-```
-CreateElement creates an element with the given namespace and name. It is used
-to unmarshal some xsd:any elements to the appropriate concrete type.
-
-#### type DocType
-
-```go
-type DocType byte
-```
-
-DocType represents one of the three document types supported (docx/xlsx/pptx)
-
-```go
-const (
-	Unknown DocType = iota
-	DocTypeSpreadsheet
-	DocTypeDocument
-	DocTypePresentation
-)
-```
-Document Type constants
-
-#### type XSDAny
-
-```go
-type XSDAny struct {
-	XMLName xml.Name
-	Attrs   []xml.Attr
-	Data    []byte
-	Nodes   []*XSDAny
-}
-```
-
-XSDAny is used to marshal/unmarshal xsd:any types in the OOXML schema.
-
-#### func (*XSDAny) MarshalXML
-
-```go
-func (x *XSDAny) MarshalXML(e *xml.Encoder, start xml.StartElement) error
-```
-MarshalXML implements the xml.Marshaler interface.
-
-#### func (*XSDAny) UnmarshalXML
-
-```go
-func (x *XSDAny) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error
-```
-UnmarshalXML implements the xml.Unmarshaler interface.
+### Licensing ###
+
+This library is offered under a dual license. It is freely available for use
+under the terms of AGPLv3. If you would like to use this library for a closed
+source project, please contact sales@unidoc.io.
+
+There are no differences in functionality between the open source and commercial 
+versions. You are encouraged to use the open source version to evaluate the library
+before purchasing a commercial license.
+
